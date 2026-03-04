@@ -1,0 +1,30 @@
+# ── Installed tools (large binaries — run install.sh to restore) ─────────────
+tools/jdk17/
+tools/maven/
+tools/.venv/
+tools/gitleaks.exe
+tools/trivy.exe
+
+# ── Node.js ───────────────────────────────────────────────────────────────────
+web/node_modules/
+web/uploads/
+web/workspaces/
+
+# ── Build / scan output ───────────────────────────────────────────────────────
+**/target/
+**/reports/
+docker-compose.generated.yml
+
+# ── Maven internals ───────────────────────────────────────────────────────────
+**/.mvn/jvm.config
+.gitleaks.toml
+.gitleaksignore
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.iml
+.idea/
+.vscode/
+*.class
+*.log

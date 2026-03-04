@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Pipeline UI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <span class="shield">🔐</span>
+      <span>Secure&nbsp;Spring&nbsp;Pipeline</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── INPUT CARD ─────────────────────────────────────── -->
+    <section class="card" id="input-card">
+
+      <h2>Run Pipeline</h2>
+      <p class="sub">Provide your Spring Boot project via Git URL or ZIP upload.</p>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="git">Git Repository</button>
+        <button class="tab"        data-tab="zip">Upload ZIP</button>
+        <button class="tab"        data-tab="local">Local Path</button>
+      </div>
+
+      <!-- Git panel -->
+      <div class="panel active" id="panel-git">
+        <label for="git-url">Repository URL</label>
+        <div class="input-row">
+          <input id="git-url" type="url"
+                 placeholder="https://github.com/user/spring-project.git" />
+          <button id="btn-git" class="btn-run">▶ Run</button>
+        </div>
+      </div>
+
+      <!-- Upload panel -->
+      <div class="panel" id="panel-zip">
+        <div id="dropzone" class="dropzone">
+          <div class="dz-inner">
+            <span class="dz-icon">📂</span>
+            <p>Drag &amp; drop your <strong>.zip</strong> here</p>
+            <p class="dz-or">— or —</p>
+            <label class="btn-browse" for="file-input">Browse file</label>
+            <input id="file-input" type="file" accept=".zip" hidden />
+          </div>
+          <p id="dz-filename" class="dz-filename hidden"></p>
+        </div>
+        <button id="btn-zip" class="btn-run" disabled>▶ Run</button>
+      </div>
+
+      <!-- Local Path panel -->
+      <div class="panel" id="panel-local">
+        <label for="local-path">Project Path</label>
+        <p class="sub" style="margin-bottom:.5rem">Path relative to the server root (e.g. <code>../micros-main</code>) or absolute.</p>
+        <div class="input-row">
+          <input id="local-path" type="text"
+                 placeholder="../micros-main" />
+          <button id="btn-local" class="btn-run">&#9654; Run</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── PIPELINE PROGRESS ──────────────────────────────── -->
+    <section class="card hidden" id="progress-card">
+
+      <div class="prog-header">
+        <h2>Pipeline Progress</h2>
+        <span id="status-badge" class="badge running">Running…</span>
+      </div>
+
+      <!-- Steps -->
+      <ol class="steps" id="steps-list">
+        <li data-key="clone"   class="step"><span class="dot"></span>Clone / Extract</li>
+        <li data-key="compose" class="step"><span class="dot"></span>Generate docker-compose</li>
+        <li data-key="junit"   class="step"><span class="dot"></span>JUnit Tests</li>
+        <li data-key="semgrep" class="step"><span class="dot"></span>Semgrep Scan</li>
+        <li data-key="leaks"   class="step"><span class="dot"></span>Gitleaks Scan</li>
+        <li data-key="maven"   class="step"><span class="dot"></span>Maven Build</li>
+        <li data-key="docker"  class="step"><span class="dot"></span>Docker Build</li>
+        <li data-key="trivy"   class="step"><span class="dot"></span>Trivy Scan</li>
+      </ol>
+
+      <!-- Log terminal -->
+      <div class="terminal-wrap">
+        <div class="term-bar">
+          <span>stdout / stderr</span>
+          <button id="btn-clear" title="Clear">✕</button>
+        </div>
+        <pre id="log-output"></pre>
+      </div>
+
+      <button id="btn-reset" class="btn-reset hidden">← New Pipeline</button>
+
+    </section>
+
+    <!-- ── REPORT CARD ──────────────────────────────────── -->
+    <section class="card hidden" id="report-card">
+
+      <div class="prog-header">
+        <h2>📋 Pipeline Report</h2>
+        <span id="report-overall" class="badge"></span>
+      </div>
+
+      <div id="report-docker" class="report-docker-row"></div>
+      <div id="report-body"></div>
+
+      <div class="report-actions">
+        <button id="btn-pdf" class="btn-pdf">📥 Download PDF Report</button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- jsPDF + autoTable for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
